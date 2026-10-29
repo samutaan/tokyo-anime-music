@@ -1,39 +1,46 @@
-name: Daily catalog sync
+name: Sync catalog and deploy website
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
   schedule:
     - cron: '17 21 * * *'
 permissions:
   contents: read
 concurrency:
-  group: catalog-sync
+  group: production-website
   cancel-in-progress: false
 jobs:
-  sync:
-    # Enable only after approval. Public standard runners avoid paid minute usage.
-    if: vars.ENABLE_CATALOG_SYNC == 'true' && github.event.repository.private == false
+  publish:
+    if: github.repository == 'samutaan/tokyo-anime-music' && github.event.repository.private == false
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     permissions:
       contents: write
     env:
       ASTRO_TELEMETRY_DISABLED: '1'
+      PUBLIC_SITE_URL: https://tokyo-anime-music.web.app
+      PUBLIC_ALLOW_INDEXING: 'true'
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.repository.default_branch }}
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: '24.19.0'
       - run: npm install --global pnpm@11.25.0
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:sync
-      - run: pnpm sync:apply
+      - name: Sync verified Apple catalog
+        if: github.event_name != 'push'
+        run: pnpm sync:apply
       - run: pnpm build
-      - name: Record review items
+      - name: Record sync report
+        if: github.event_name != 'push'
         run: |
           node -e 'const fs=require("fs");const r=JSON.parse(fs.readFileSync("work/sync-report.json"));fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,JSON.stringify(r,null,2));'
       - name: Commit validated catalog only
+        if: github.event_name != 'push'
         run: |
           if git diff --quiet -- src/data/releases.json; then exit 0; fi
           git config user.name 'github-actions[bot]'
@@ -41,3 +48,9 @@ jobs:
           git add src/data/releases.json
           git commit -m 'Update verified Apple catalog'
           git push
+      - name: Deploy static site
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TOKYO_ANIME_MUSIC }}
+          channelId: live
+          projectId: tokyo-anime-music
