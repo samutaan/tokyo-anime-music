@@ -22,6 +22,7 @@ pnpm build
 
 Firebase Hosting Spark (free), static `dist` output only. Set `PUBLIC_SITE_URL=https://tokyo-anime-music.web.app` and `PUBLIC_ALLOW_INDEXING=true` for production builds. No paid services or billing upgrades.
 
-GitHub automation configuration is being completed. Secrets belong only in GitHub Actions secrets, never in source files. Local work logs and environment files are excluded.
+GitHub Actions runs daily at approximately 06:17 Japan time and on manual dispatch, synchronizes the verified Apple catalog, tests and builds the site, then deploys to Firebase. Pushes to main run tests, build and deploy without catalog synchronization. Failed steps stop publication. Scheduling can be delayed; GitHub may disable scheduled workflows after prolonged repository inactivity. Secrets belong only in GitHub Actions secrets, never in source files. Local work logs and environment files are excluded.
 
 All character artwork and branding remain the property of their respective rights holders. Public source visibility does not grant a license to reuse these assets.
+
