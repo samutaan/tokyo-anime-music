@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import type {Release} from '../data/catalog';
+interface Props {release:Release; ja:boolean}
+const {release:r,ja}=Astro.props;
+const prefix=ja?'/ja':'';
+---
+<Layout lang={ja?'ja':'en'} page="music" title={r.title+' | Tokyo Anime Music'} description={ja?r.title+' — Tokyo Anime Musicの楽曲情報と配信リンク。':r.title+' — release information and listening links from Tokyo Anime Music.'} alternateUrl={(ja?'':'/ja')+'/music/'+r.id+'/'}>
+<section class="section release-detail"><a class="text-link" href={prefix+'/music/'}>← {ja?'楽曲一覧':'All music'}</a><p class="eyebrow">TOKYO ANIME MUSIC / RELEASE</p><h1>{r.title}</h1><p>Tokyo Anime Music</p><p class="status">{r.verified&&r.status==='released'?(ja?'配信確認済み':'Release verified'):(ja?'配信状況確認待ち':'Availability pending')}</p>
+<dl><dt>{ja?'リリース形式':'Type'}</dt><dd>{r.releaseType==='unknown'?(ja?'確認待ち':'Pending'):r.releaseType.toUpperCase()}</dd><dt>{ja?'配信日':'Release date'}</dt><dd>{r.releaseDate??(ja?'確認待ち':'Pending')}</dd></dl>
+{r.status==='pending'&&<p class="muted">{ja?'曲名とHyperFollowリンクを確認済みです。各サービスでの配信開始は未確認です。':'The title and HyperFollow link are confirmed. Availability on streaming services has not yet been checked.'}</p>}
+<p class="muted">{ja?'配信確認はリンク先のサービス・地域に基づきます。すべてのサービスでの配信を保証するものではありません。':'Availability is based on the linked service and region, and may differ elsewhere.'}</p><div class="actions">{[[r.spotify,'Spotify'],[r.appleMusic,'Apple Music'],[r.hyperfollow,'HyperFollow'],[r.youtube,'YouTube']].filter(([url])=>url).map(([url,label])=><a class="button secondary" href={url} target="_blank" rel="noopener noreferrer">{label} ↗</a>)}</div><p class="muted">{ja?'リンクは新しいタブで開きます。':'Links open in a new tab.'}</p></section>
+</Layout>
+<style>.release-detail{min-height:70vh;max-width:1200px}.release-detail .eyebrow{margin-top:45px}.release-detail h1{font-size:clamp(32px,5vw,64px);overflow-wrap:anywhere;line-height:1.3;letter-spacing:-1px}.status{color:#efb1d5}dl{display:grid;grid-template-columns:140px 1fr;gap:16px;margin:32px 0}dd{margin:0}.actions{margin-top:30px}</style>

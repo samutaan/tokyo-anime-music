@@ -1,0 +1,7 @@
+---
+import ReleaseDetail from '../../components/ReleaseDetail.astro';
+import {releases,pendingReleases} from '../../data/catalog';
+export function getStaticPaths(){return [...releases,...pendingReleases].map(release=>({params:{id:release.id},props:{release}}));}
+const {release}=Astro.props;
+---
+<ReleaseDetail release={release} ja={false} />

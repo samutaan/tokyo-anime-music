@@ -1,0 +1,22 @@
+---
+import '../styles/global.css';
+import SocialLinks from '../components/SocialLinks.astro';
+import { pages, labels, href, type Page, type Lang } from '../data/site';
+interface Props { lang: Lang; page: Page; title: string; description: string; alternateUrl?: string; }
+const {lang, page, title, description} = Astro.props;
+const configured = import.meta.env.PUBLIC_SITE_URL;
+const origin = configured ? new URL(configured).origin : undefined;
+const indexable = !!origin && import.meta.env.PUBLIC_ALLOW_INDEXING === 'true';
+const canonical = origin ? new URL(Astro.url.pathname, origin).href : undefined;
+const otherPath = Astro.props.alternateUrl ?? href(lang === 'en' ? 'ja' : 'en',page);
+const schema = { '@context':'https://schema.org','@type':'MusicGroup',name:'Tokyo Anime Music', ...(origin?{url:origin}:{}),sameAs:['https://www.youtube.com/@TokyoAnimeMusic','https://open.spotify.com/artist/1DZmOid1iJozu92mvwcO5U','https://music.apple.com/jp/artist/tokyo-anime-music/6782565755']};
+---
+<!doctype html>
+<html lang={lang}>
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="description" content={description} /><meta name="theme-color" content="#090d23" /><meta name="robots" content={indexable ? "index, follow" : "noindex, nofollow"} /><meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:type" content="website" /><title>{title}</title><link rel="icon" href="/favicon.svg" type="image/svg+xml" />{origin && <><link rel="canonical" href={canonical}/><link rel="alternate" hreflang={lang} href={canonical}/><link rel="alternate" hreflang={lang==='ja'?'en':'ja'} href={new URL(otherPath,origin).href}/><meta property="og:url" content={canonical}/><meta property="og:image" content={new URL('/images/official-character.jpg',origin).href}/><meta property="og:image:alt" content="Tokyo Anime Music official character"/></>}<meta property="og:site_name" content="Tokyo Anime Music"/><meta name="twitter:card" content="summary"/>{page==='home'&&<script type="application/ld+json" set:html={JSON.stringify(schema).replaceAll('<','\u003c')}/> }</head>
+<body>
+<a class="skip" href="#main">{lang === 'en' ? 'Skip to content' : '本文へ移動'}</a>
+<header class="header"><a class="brand" href={href(lang,'home')} aria-label="Tokyo Anime Music home"><span class="brand-mark">T<span>✦</span>M</span><span>TOKYO<br/><b>ANIME MUSIC</b></span></a><nav aria-label={lang === 'en' ? 'Main navigation' : 'メインナビゲーション'}>{pages.map((p,i)=><a href={href(lang,p)} aria-current={page === p ? 'page' : undefined}>{labels[lang][i]}</a>)}</nav><a class="language" href={Astro.props.alternateUrl ?? href(lang === 'en' ? 'ja' : 'en', page)} lang={lang === 'en' ? 'ja' : 'en'}>{lang === 'en' ? '日本語 ↗' : 'EN ↗'}</a></header>
+<main id="main"><slot /></main>
+<div class="social-footer"><SocialLinks ja={lang==='ja'} compact /></div><footer><a class="footer-brand" href={href(lang,'home')}>TOKYO ANIME MUSIC<span>Where Anime Meets Music.</span></a><p>{lang === 'en' ? 'A little Tokyo. A world of sound.' : '東京の色彩を、音楽に。'}</p><small>© {new Date().getFullYear()} Tokyo Anime Music</small></footer>
+</body></html>

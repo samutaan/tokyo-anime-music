@@ -1,0 +1,130 @@
+[
+  {
+    "platform": "Spotify",
+    "source": "https://open.spotify.com/artist/1DZmOid1iJozu92mvwcO5U",
+    "label": {
+      "ja": "公式「人気曲」の表示順位",
+      "en": "Official Popular tracks order"
+    },
+    "scope": {
+      "ja": "アーティスト内の人気曲。日本語表示。対象地域・集計期間はページに明記なし。累計再生数順とは限りません。",
+      "en": "Artist popular tracks, viewed in Japanese. Region and reporting period are not specified on the page. This is not necessarily lifetime stream-count order."
+    },
+    "entries": [
+      {
+        "title": "蜃気楼ブルー (Mirage Blue)",
+        "url": "https://open.spotify.com/track/1pkPdzRD0lQ8JdlA5MmtH0",
+        "position": 1
+      },
+      {
+        "title": "星降るホーム （Platform Under Falling Stars）",
+        "url": "https://open.spotify.com/track/4sGc8UDvscQ3VhmznmnFuh",
+        "position": 2
+      },
+      {
+        "title": "あしためく",
+        "url": "https://open.spotify.com/track/4HVKiCDHiofJ6FmQJL4KXb",
+        "position": 3
+      },
+      {
+        "title": "夜光のとなり",
+        "url": "https://open.spotify.com/track/5M7uexaCAtKIWjiOWTMWWg",
+        "position": 4
+      },
+      {
+        "title": "透明な夜に浮かぶ",
+        "url": "https://open.spotify.com/track/1DzyWtE2b9BQYQZb33TBJX",
+        "position": 5
+      }
+    ],
+    "observedAt": "2026-10-29",
+    "method": "Public official page reviewed manually"
+  },
+  {
+    "platform": "Apple Music",
+    "source": "https://music.apple.com/jp/artist/tokyo-anime-music/6782565755",
+    "label": {
+      "ja": "公式「トップソング」の掲載順",
+      "en": "Official Top Songs display order"
+    },
+    "scope": {
+      "ja": "日本ストアのトップソング欄で確認した掲載順です。公式の数値順位・再生回数・集計期間は表示されていません。",
+      "en": "Display order observed in Top Songs on the Japan storefront. Numeric ranks, play counts and the reporting period are not provided."
+    },
+    "entries": [
+      {
+        "title": "夜明け前、君を想う",
+        "url": "https://music.apple.com/jp/album/6823894865?i=6823894869",
+        "position": 1
+      },
+      {
+        "title": "忘れたふりをしてた",
+        "url": "https://music.apple.com/jp/album/6827367990?i=6827367991",
+        "position": 2
+      },
+      {
+        "title": "雨色リフレイン",
+        "url": "https://music.apple.com/jp/album/6827247074?i=6827247075",
+        "position": 3
+      },
+      {
+        "title": "しずくのやすらぎ",
+        "url": "https://music.apple.com/jp/album/6827247043?i=6827247044",
+        "position": 4
+      },
+      {
+        "title": "雨のフレーム",
+        "url": "https://music.apple.com/jp/album/6827247027?i=6827247028",
+        "position": 5
+      },
+      {
+        "title": "眠りにつく前に",
+        "url": "https://music.apple.com/jp/album/6827204037?i=6827204038",
+        "position": 6
+      }
+    ],
+    "observedAt": "2026-10-29",
+    "method": "Public official page reviewed manually"
+  },
+  {
+    "platform": "YouTube",
+    "source": "https://www.youtube.com/@TokyoAnimeMusic/videos",
+    "label": {
+      "ja": "参考：公式チャンネル「人気の動画」",
+      "en": "Reference: channel Popular videos"
+    },
+    "scope": {
+      "ja": "動画タブで「人気の動画」を選択した掲載順。カバー・音楽集を含む動画単位の順位です。オリジナル楽曲だけの順位やYouTube Musicの再生順位ではありません。",
+      "en": "Order shown by the Popular filter on the Videos tab. Includes covers and compilations; these are video rankings, not original-song or YouTube Music rankings."
+    },
+    "entries": [
+      {
+        "title": "君の知らない物語～カラオケハモリ練習～ハモリコーラスのみガイド無し　ハモリ練習用",
+        "url": "https://www.youtube.com/watch?v=i1QMpdP-KnA",
+        "position": 1
+      },
+      {
+        "title": "【アニメMV】君の知らない物語 -cover-アニメミュージックビデオ　Voisona 玉姫 (CV:犬山たまき)　Voisona CiFlower 化物語　supercell j-pop",
+        "url": "https://www.youtube.com/watch?v=3m9PWOH8s7k",
+        "position": 2
+      },
+      {
+        "title": "夜に聴きたい切ないアニソン | 君の知らない物語【雨衣 Ver.】",
+        "url": "https://www.youtube.com/watch?v=sdDsIB3CUMk",
+        "position": 3
+      },
+      {
+        "title": "気分が上がるJ-POP・アニソン | あなたの夜を変える音楽",
+        "url": "https://www.youtube.com/watch?v=a-jjpO2skyg",
+        "position": 4
+      },
+      {
+        "title": "夜に聴きたい、泣ける恋うた集 🌙｜忘れられない想いに寄り添う Emotional J-POP Playlist",
+        "url": "https://www.youtube.com/watch?v=b_GCi4YP0i0",
+        "position": 5
+      }
+    ],
+    "observedAt": "2026-10-29",
+    "method": "Public official page reviewed manually"
+  }
+]

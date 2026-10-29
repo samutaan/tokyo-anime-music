@@ -1,0 +1,1 @@
+export function GET(){const site=import.meta.env.PUBLIC_SITE_URL;const enabled=!!site&&import.meta.env.PUBLIC_ALLOW_INDEXING==='true';return new Response('User-agent: *\n'+(enabled?'Allow: /\nSitemap: '+new URL('/sitemap.xml',site).href:'Disallow: /')+'\n',{headers:{'Content-Type':'text/plain; charset=utf-8'}})}

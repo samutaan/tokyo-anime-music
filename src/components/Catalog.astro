@@ -1,0 +1,22 @@
+---
+import {releases,pendingReleases} from '../data/catalog';
+import {hyperfollow} from '../data/site';
+interface Props {ja:boolean}
+const {ja}=Astro.props;
+const catalogItems=[...releases,...pendingReleases];
+---
+{catalogItems.length===0 ? <div class="empty-state"><span class="symbol">♫</span><h2>{ja?'楽曲一覧は準備中です':'The collection is coming together.'}</h2><p>{ja?'確認済みの楽曲から順に掲載します。配信ページで音楽をお楽しみください。':'Verified releases will appear here. Discover the music on our release page.'}</p><a class="button primary" href={hyperfollow} target="_blank" rel="noopener noreferrer">{ja?'HyperFollowで聴く':'Listen on HyperFollow'} ↗</a></div> : <div data-catalog><p class="catalog-notice">{ja?'曲名とHyperFollowリンクを確認済みです。「配信状況確認待ち」は未配信を意味しません。各サービスでの配信開始は別途確認中です。':'Titles and HyperFollow links are confirmed. Availability pending means distribution has not yet been checked, not that a release is unavailable.'}</p>
+<div class="catalog-controls"><label>{ja?'楽曲を検索':'Search music'}<input type="search" data-search placeholder={ja?'曲名を入力':'Search by title'} /></label><label>{ja?'リリース形式':'Release type'}<select data-type><option value="">{ja?'すべて':'All'}</option><option value="single">Single</option><option value="album">Album</option><option value="ep">EP</option><option value="unknown">{ja?'形式確認待ち':'Type pending'}</option></select></label></div>
+<p data-count aria-live="polite" data-unit={ja?'件':'releases'}>{catalogItems.length} {ja?'件':'releases'}</p>
+<div class="catalog-grid">{catalogItems.map(r=><article class="release-card" data-release data-title={r.title.toLocaleLowerCase()} data-kind={r.releaseType}>
+{r.cover ? <img src={r.cover} alt={r.title} width="400" height="400" loading="lazy"/> : <div class="release-placeholder" aria-hidden="true">♫</div>}
+<div class="release-info"><small>{r.releaseType==='unknown'?(ja?'形式確認待ち':'Type pending'):r.releaseType.toUpperCase()}{r.releaseDate&&' · '+r.releaseDate}</small><h2><a href={(ja?'/ja':'')+'/music/'+r.id+'/'}>{r.title}</a></h2><p>{r.artist}</p><p class="availability">{r.status==='pending'?(ja?'配信状況確認待ち':'Availability pending'):(ja?'配信確認済み':'Available')}</p><a class="text-link" href={(ja?'/ja':'')+'/music/'+r.id+'/'}>{ja?'楽曲の詳細':'Release details'} →</a><div class="release-links">{[[r.hyperfollow,'HyperFollow'],[r.spotify,'Spotify'],[r.appleMusic,'Apple Music'],[r.youtube,'YouTube']].filter(([url])=>url).map(([url,label])=><a class="text-link" href={url} target="_blank" rel="noopener noreferrer">{label} ↗</a>)}</div></div></article>)}</div>
+<p data-empty hidden>{ja?'一致する楽曲がありません。':'No matching releases.'}</p></div>}
+<script>
+const catalog=document.querySelector<HTMLElement>('[data-catalog]');
+if(catalog){const search=catalog.querySelector<HTMLInputElement>('[data-search]')!;const type=catalog.querySelector<HTMLSelectElement>('[data-type]')!;const count=catalog.querySelector<HTMLElement>('[data-count]')!;const empty=catalog.querySelector<HTMLElement>('[data-empty]')!;
+const filter=()=>{let total=0;for(const card of catalog.querySelectorAll<HTMLElement>('[data-release]')){card.hidden=!(card.dataset.title?.normalize('NFKC').includes(search.value.trim().normalize('NFKC').toLocaleLowerCase())&&(!type.value||card.dataset.kind===type.value));if(!card.hidden)total++;}count.textContent=total+' '+count.dataset.unit;empty.hidden=total!==0;};search.addEventListener('input',filter);type.addEventListener('change',filter);}
+</script>
+<style>
+.catalog-controls{display:flex;gap:20px;flex-wrap:wrap}.catalog-controls label{display:grid;gap:10px;font-size:13px;flex:1;min-width:180px}input,select{padding:14px;border:1px solid #777a99;border-radius:6px;background:#10162d;color:white;font:inherit}.catalog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:24px}.release-card{border:1px solid #ffffff25;border-radius:10px;overflow:hidden;background:#10162d}.release-card[hidden]{display:none}.release-card img,.release-placeholder{width:100%;aspect-ratio:1;object-fit:cover}.release-placeholder{aspect-ratio:3;display:grid;place-items:center;font-size:60px;background:linear-gradient(140deg,#252540,#573551);color:#f0b0d3}.release-info{padding:24px}.release-info h2{font-size:25px;margin-top:15px;overflow-wrap:anywhere}.release-info p,.release-info small{color:#b2b6cf}.release-links{display:flex;gap:15px;flex-wrap:wrap}
+</style>

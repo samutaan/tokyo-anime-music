@@ -1,0 +1,7 @@
+---
+import PageView from '../components/Page.astro';
+import {pages, type Lang} from '../data/site';
+export function getStaticPaths() { return (['en','ja'] as Lang[]).flatMap(lang => pages.map(page => ({params:{path: (lang === 'ja' ? 'ja' : '') + (page === 'home' ? '' : (lang === 'ja' ? '/' : '') + page) || undefined},props:{lang,page}}))); }
+const {lang,page} = Astro.props;
+---
+<PageView lang={lang} page={page} />

@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+work/
+
+.firebase/
+firebase-debug*.log
+*-debug.log
+*service-account*.json

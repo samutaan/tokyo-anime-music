@@ -1,0 +1,43 @@
+name: Daily catalog sync
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 21 * * *'
+permissions:
+  contents: read
+concurrency:
+  group: catalog-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    # Enable only after approval. Public standard runners avoid paid minute usage.
+    if: vars.ENABLE_CATALOG_SYNC == 'true' && github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.19.0'
+      - run: npm install --global pnpm@11.25.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:sync
+      - run: pnpm sync:apply
+      - run: pnpm build
+      - name: Record review items
+        run: |
+          node -e 'const fs=require("fs");const r=JSON.parse(fs.readFileSync("work/sync-report.json"));fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,JSON.stringify(r,null,2));'
+      - name: Commit validated catalog only
+        run: |
+          if git diff --quiet -- src/data/releases.json; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/data/releases.json
+          git commit -m 'Update verified Apple catalog'
+          git push

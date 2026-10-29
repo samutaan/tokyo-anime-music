@@ -1,0 +1,11 @@
+---
+import {socials} from '../data/socials';
+interface Props { ja:boolean; compact?:boolean }
+const {ja,compact=false}=Astro.props;
+---
+<nav class:list={['social-links',{compact}]} aria-label={ja?'公式SNS（新しいタブで開きます）':'Official social accounts (opens in a new tab)'}>
+{socials.map(s=><a href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name+' '+s.handle+(ja?'（新しいタブで開きます）':' (opens in a new tab)')}><span class="social-mark" aria-hidden="true">{s.mark}</span><span class="social-label">{s.name}{!compact&&<small>{s.handle}</small>}</span><span class="social-arrow" aria-hidden="true">↗</span></a>)}
+</nav>
+<style>
+.social-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:30px}.social-links a{display:flex;align-items:center;gap:12px;border:1px solid #ffffff28;border-radius:9px;padding:19px 15px;background:#141a30;min-height:70px;transition:background .2s,border-color .2s}.social-links a:hover{background:#25223d;border-color:#efb0d4}.social-mark{font-size:25px;color:#efb0d4;width:30px;text-align:center}.social-label{font-size:14px;font-weight:700;min-width:0}.social-label small{display:block;font-size:10px;font-weight:400;color:#b6bad3;margin-top:7px;overflow-wrap:anywhere}.social-arrow{margin-left:auto;color:#c9c3dc}.compact{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:0}.compact a{background:transparent;min-height:44px;padding:9px 12px;gap:7px}.compact .social-mark{font-size:17px;width:18px}.compact .social-label{font-size:11px}.compact .social-arrow{font-size:11px}@media(max-width:600px){.social-links:not(.compact){grid-template-columns:1fr}.compact{gap:8px}}
+</style>

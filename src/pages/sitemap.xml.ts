@@ -1,0 +1,3 @@
+import {releases,pendingReleases} from '../data/catalog';
+import {pages,href} from '../data/site';
+export function GET(){const site=import.meta.env.PUBLIC_SITE_URL;const paths=['en','ja'].flatMap(lang=>[(lang==='ja'?'/ja':'')+'/rankings/',...pages.map(p=>href(lang as 'en'|'ja',p)),...[...releases,...pendingReleases].map(r=>(lang==='ja'?'/ja':'')+'/music/'+r.id+'/')]);const urls=site?paths.map(p=>'<url><loc>'+new URL(p,site).href.replaceAll('&','&amp;')+'</loc></url>').join(''):'';return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+urls+'</urlset>',{headers:{'Content-Type':'application/xml; charset=utf-8'}})}
