@@ -2,6 +2,7 @@
 import data from '../data/video-rankings.json';
 interface Props { ja: boolean }
 const {ja}=Astro.props;
+const automatic = "method" in data && data.method === "youtube-api-view-count";
 const seen=new Set<string>();
 for(const group of data.groups) for(const [i,e] of group.entries.entries()) {
   if(e.position!==i+1 || seen.has(e.url) || e.title.includes('君の知らない物語') || !/^https:\/\/www.youtube.com\/watch\?v=[\w-]{11}$/.test(e.url) || (group.id==='long' ? e.seconds<600 : e.seconds>=600)) throw Error('Invalid video ranking');
@@ -11,8 +12,8 @@ for(const group of data.groups) for(const [i,e] of group.entries.entries()) {
 <section class="video-rankings" aria-labelledby="video-rankings-title">
   <p class="eyebrow">YOUTUBE / POPULAR VIDEOS</p>
   <h2 id="video-rankings-title">{ja?'人気の動画 TOP 10':'Popular videos · Top 10'}</h2>
-  <p class="note">{ja?'公式チャンネルの「人気の動画」の掲載順をもとに、長さ別に選んだランキングです。「君の知らない物語」関連を除外し、各部門で1位から付け直しています。':'Selected from the official channel’s Popular videos order, grouped by length. Videos related to “Kimi no Shiranai Monogatari” are excluded; positions restart in each category.'}</p>
-  <p class="note">{ja?'確認日':'Observed'}: <time datetime={data.observedAt}>{data.observedAt}</time> · {ja?'手動確認・リアルタイム更新ではありません。10分ちょうどは長編に含みます。':'Manually reviewed; not live rankings. Exactly 10 minutes belongs to the long category.'}</p>
+  <p class="note">{automatic ? (ja?'公式APIの累計再生回数順です。確認済み動画を対象に、長さ別に各10件を掲載しています。「君の知らない物語」関連を除外。同数は動画ID順です。':'Ranked by lifetime views from the official API among reviewed videos, with up to 10 per length category. Kimi no Shiranai Monogatari videos are excluded. Ties use video ID order.') : ja?'公式チャンネルの「人気の動画」の掲載順をもとに、長さ別に選んだランキングです。「君の知らない物語」関連を除外し、各部門で1位から付け直しています。':'Selected from the official channel’s Popular videos order, grouped by length. Videos related to “Kimi no Shiranai Monogatari” are excluded; positions restart in each category.'}</p>
+  <p class="note">{ja?'確認日':'Observed'}: <time datetime={data.observedAt}>{data.observedAt}</time> · {automatic ? (ja?'毎日更新を試みます。取得失敗時は前回の記録を表示します。10分ちょうどは長編です。':'Updated daily when retrieval succeeds; otherwise the last snapshot is retained. Exactly 10 minutes counts as long.') : (ja?'手動確認の記録です。自動更新の初回取得待ち。10分ちょうどは長編に含みます。':'Manually reviewed snapshot; awaiting the first automated retrieval. Exactly 10 minutes counts as long.')}</p>
   <div class="video-ranking-grid">{data.groups.map(group=><article>
     <h3>{group.id==='long'?(ja?'長編 · 10分以上':'Long · 10 minutes or more'):(ja?'短編 · 10分未満':'Short · Under 10 minutes')}</h3>
     <ol>{group.entries.map(entry=><li>

@@ -31,6 +31,19 @@ jobs:
       - run: npm install --global pnpm@11.25.0
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:sync
+      - run: pnpm test:youtube
+      - name: Sync YouTube rankings
+        id: youtube
+        if: github.event_name != 'push'
+        continue-on-error: true
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: pnpm sync:youtube
+      - name: Report YouTube sync
+        if: github.event_name != 'push'
+        env:
+          YOUTUBE_RESULT: ${{ steps.youtube.outcome }}
+        run: echo "YouTube ranking sync result — $YOUTUBE_RESULT. On failure, the previous snapshot is retained." >> "$GITHUB_STEP_SUMMARY"
       - name: Sync verified Apple catalog
         if: github.event_name != 'push'
         run: pnpm sync:apply
@@ -39,14 +52,14 @@ jobs:
         if: github.event_name != 'push'
         run: |
           node -e 'const fs=require("fs");const r=JSON.parse(fs.readFileSync("work/sync-report.json"));fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,JSON.stringify(r,null,2));'
-      - name: Commit validated catalog only
+      - name: Commit validated catalog and rankings
         if: github.event_name != 'push'
         run: |
-          if git diff --quiet -- src/data/releases.json; then exit 0; fi
+          if git diff --quiet -- src/data/releases.json src/data/video-rankings.json; then exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add src/data/releases.json
-          git commit -m 'Update verified Apple catalog'
+          git add src/data/releases.json src/data/video-rankings.json
+          git commit -m 'Update verified catalog and YouTube rankings'
           git push
       - name: Deploy static site
         uses: FirebaseExtended/action-hosting-deploy@v0
