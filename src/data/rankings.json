@@ -85,46 +85,5 @@
     ],
     "observedAt": "2026-10-29",
     "method": "Public official page reviewed manually"
-  },
-  {
-    "platform": "YouTube",
-    "source": "https://www.youtube.com/@TokyoAnimeMusic/videos",
-    "label": {
-      "ja": "参考：公式チャンネル「人気の動画」",
-      "en": "Reference: channel Popular videos"
-    },
-    "scope": {
-      "ja": "動画タブで「人気の動画」を選択した掲載順。カバー・音楽集を含む動画単位の順位です。オリジナル楽曲だけの順位やYouTube Musicの再生順位ではありません。",
-      "en": "Order shown by the Popular filter on the Videos tab. Includes covers and compilations; these are video rankings, not original-song or YouTube Music rankings."
-    },
-    "entries": [
-      {
-        "title": "君の知らない物語～カラオケハモリ練習～ハモリコーラスのみガイド無し　ハモリ練習用",
-        "url": "https://www.youtube.com/watch?v=i1QMpdP-KnA",
-        "position": 1
-      },
-      {
-        "title": "【アニメMV】君の知らない物語 -cover-アニメミュージックビデオ　Voisona 玉姫 (CV:犬山たまき)　Voisona CiFlower 化物語　supercell j-pop",
-        "url": "https://www.youtube.com/watch?v=3m9PWOH8s7k",
-        "position": 2
-      },
-      {
-        "title": "夜に聴きたい切ないアニソン | 君の知らない物語【雨衣 Ver.】",
-        "url": "https://www.youtube.com/watch?v=sdDsIB3CUMk",
-        "position": 3
-      },
-      {
-        "title": "気分が上がるJ-POP・アニソン | あなたの夜を変える音楽",
-        "url": "https://www.youtube.com/watch?v=a-jjpO2skyg",
-        "position": 4
-      },
-      {
-        "title": "夜に聴きたい、泣ける恋うた集 🌙｜忘れられない想いに寄り添う Emotional J-POP Playlist",
-        "url": "https://www.youtube.com/watch?v=b_GCi4YP0i0",
-        "position": 5
-      }
-    ],
-    "observedAt": "2026-10-29",
-    "method": "Public official page reviewed manually"
   }
 ]
