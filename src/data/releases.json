@@ -1483,7 +1483,8 @@
     "availabilitySource": "Apple iTunes Search API (JP)",
     "availabilityScope": "Apple Music JP; other services not checked by this sync",
     "releaseDate": "2026-10-13",
-    "appleVerifiedAt": "2026-10-28"
+    "appleVerifiedAt": "2026-10-28",
+    "spotify": "https://open.spotify.com/track/5M7uexaCAtKIWjiOWTMWWg"
   },
   {
     "id": "release-e9679d9bc4cd",
@@ -1583,7 +1584,8 @@
     "availabilitySource": "Apple iTunes Search API (JP)",
     "availabilityScope": "Apple Music JP; other services not checked by this sync",
     "releaseDate": "2026-10-13",
-    "appleVerifiedAt": "2026-10-28"
+    "appleVerifiedAt": "2026-10-28",
+    "spotify": "https://open.spotify.com/track/1DzyWtE2b9BQYQZb33TBJX"
   },
   {
     "id": "release-2afef7fed5ca",
@@ -1603,7 +1605,8 @@
     "availabilitySource": "Apple iTunes Search API (JP)",
     "availabilityScope": "Apple Music JP; other services not checked by this sync",
     "releaseDate": "2026-10-13",
-    "appleVerifiedAt": "2026-10-28"
+    "appleVerifiedAt": "2026-10-28",
+    "spotify": "https://open.spotify.com/track/4sGc8UDvscQ3VhmznmnFuh"
   },
   {
     "id": "release-15c63bd5021e",
@@ -1763,7 +1766,8 @@
     "availabilitySource": "Apple iTunes Search API (JP)",
     "availabilityScope": "Apple Music JP; other services not checked by this sync",
     "releaseDate": "2026-10-13",
-    "appleVerifiedAt": "2026-10-28"
+    "appleVerifiedAt": "2026-10-28",
+    "spotify": "https://open.spotify.com/track/1pkPdzRD0lQ8JdlA5MmtH0"
   },
   {
     "id": "release-7eac3313577d",
@@ -1845,6 +1849,7 @@
     "availabilitySource": "Apple iTunes Search API (JP)",
     "availabilityScope": "Apple Music JP; other services not checked by this sync",
     "releaseDate": "2026-10-12",
-    "appleVerifiedAt": "2026-10-28"
+    "appleVerifiedAt": "2026-10-28",
+    "spotify": "https://open.spotify.com/track/4HVKiCDHiofJ6FmQJL4KXb"
   }
 ]
