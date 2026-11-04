@@ -1,6 +1,6 @@
 {
-  "observedAt": "2026-11-03",
-  "updatedAt": "2026-11-03T02:54:01.393Z",
+  "observedAt": "2026-11-04",
+  "updatedAt": "2026-11-04T01:19:32.963Z",
   "method": "youtube-api-view-count",
   "source": "https://www.youtube.com/@TokyoAnimeMusic/videos",
   "groups": [
@@ -36,7 +36,7 @@
           "url": "https://www.youtube.com/watch?v=qXFV48hTzeo",
           "duration": "1 時間 24 分 22 秒",
           "seconds": 5062,
-          "views": 403,
+          "views": 404,
           "position": 4
         },
         {
@@ -97,7 +97,7 @@
           "url": "https://www.youtube.com/watch?v=c6jviyQrxFA",
           "duration": "4 分 11 秒",
           "seconds": 251,
-          "views": 487,
+          "views": 488,
           "position": 1
         },
         {
@@ -105,7 +105,7 @@
           "url": "https://www.youtube.com/watch?v=U4bekQiD7pQ",
           "duration": "4 分 11 秒",
           "seconds": 251,
-          "views": 240,
+          "views": 243,
           "position": 2
         },
         {
@@ -113,7 +113,7 @@
           "url": "https://www.youtube.com/watch?v=0oBjirZMpqA",
           "duration": "3 分 35 秒",
           "seconds": 215,
-          "views": 213,
+          "views": 214,
           "position": 3
         },
         {
@@ -133,19 +133,19 @@
           "position": 5
         },
         {
+          "title": "気分が上がる応援J-POP | Move With Me",
+          "url": "https://www.youtube.com/watch?v=2vq6malRFhU",
+          "duration": "3 分 31 秒",
+          "seconds": 211,
+          "views": 134,
+          "position": 6
+        },
+        {
           "title": "夜に聴きたいエモいサイバーパンクJ-POP | アニメMV「未明のアーカイブ」— 消えない声",
           "url": "https://www.youtube.com/watch?v=wv3tzjjWESo",
           "duration": "3 分 1 秒",
           "seconds": 181,
           "views": 134,
-          "position": 6
-        },
-        {
-          "title": "気分が上がる応援J-POP | Move With Me",
-          "url": "https://www.youtube.com/watch?v=2vq6malRFhU",
-          "duration": "3 分 31 秒",
-          "seconds": 211,
-          "views": 133,
           "position": 7
         },
         {
