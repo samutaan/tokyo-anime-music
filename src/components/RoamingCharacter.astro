@@ -1,0 +1,43 @@
+---
+interface Props { ja: boolean }
+const {ja}=Astro.props;
+---
+<div class="roaming-character" data-roaming-character aria-hidden="true">
+  <div class="walker-art"><img src="/images/walking-character.png" alt="" width="1024" height="1536" decoding="async" /></div>
+  <span class="walker-shadow"></span>
+</div>
+<button class="walker-toggle" data-walker-toggle aria-pressed="false" data-stop={ja?'キャラを休ませる':'Pause character'} data-start={ja?'キャラを歩かせる':'Let character walk'}>{ja?'キャラを休ませる':'Pause character'}</button>
+<script>
+const walker=document.querySelector<HTMLElement>('[data-roaming-character]');
+const toggle=document.querySelector<HTMLButtonElement>('[data-walker-toggle]');
+if(walker&&toggle){
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ let paused=reduced.matches, x=24, target=24, rest=0, previous=0, frame=0;
+ const bounds=()=>({min:12,max:Math.max(12,innerWidth-walker.offsetWidth-12)});
+ const choose=()=>{const b=bounds();target=b.min+Math.random()*(b.max-b.min);};
+ const render=()=>{walker.style.transform=`translate3d(${x}px,0,0)`;};
+ const updateControl=()=>{toggle.textContent=paused?toggle.dataset.start!:toggle.dataset.stop!;toggle.setAttribute('aria-pressed',String(paused));walker.classList.toggle('walking',!paused&&rest<=0);};
+ const tick=(now:number)=>{
+  const dt=Math.min((now-previous)/1000,.05);previous=now;
+  if(!paused&&!document.hidden){
+   const b=bounds();x=Math.max(b.min,Math.min(b.max,x));
+   if(rest>0){rest-=dt;walker.classList.remove('walking');if(rest<=0)choose();}
+   else {const delta=target-x;const step=(innerWidth<600?24:36)*dt;
+    if(Math.abs(delta)<=Math.max(step,2)){x=target;rest=1.5+Math.random()*3;walker.classList.remove('walking');}
+    else{x+=Math.sign(delta)*step;walker.classList.add('walking');walker.style.setProperty('--lean',delta<0?'-3deg':'3deg');}
+   }
+   render();
+  }
+  if(!paused&&!document.hidden)frame=requestAnimationFrame(tick);
+ };
+ const start=()=>{cancelAnimationFrame(frame);previous=performance.now();if(!paused&&!document.hidden)frame=requestAnimationFrame(tick);};
+ toggle.addEventListener('click',()=>{paused=!paused;updateControl();start();});
+ reduced.addEventListener('change',()=>{paused=reduced.matches;updateControl();start();});
+ document.addEventListener('visibilitychange',start);
+ window.addEventListener('resize',()=>{const b=bounds();x=Math.min(x,b.max);target=Math.min(target,b.max);render();});
+ choose();render();updateControl();start();
+}
+</script>
+<style>
+.roaming-character{position:fixed;bottom:16px;left:0;width:clamp(88px,10vw,148px);height:auto;aspect-ratio:2/3;z-index:25;pointer-events:none;user-select:none;mix-blend-mode:screen;will-change:transform}.walker-art{width:100%;height:100%;transform-origin:50% 92%}.walker-art img{display:block;width:100%;height:100%;object-fit:contain;mask-image:radial-gradient(ellipse 52% 55% at 48% 50%,#000 74%,transparent 99%)}.walking .walker-art{animation:character-step .65s ease-in-out infinite}.walker-shadow{position:absolute;bottom:0;left:25%;width:50%;height:6px;background:#ef83be55;border-radius:50%;filter:blur(3px)}.walker-toggle{position:fixed;right:12px;bottom:12px;z-index:26;padding:9px 14px;border:1px solid #d49abb66;border-radius:24px;background:#10162dee;color:#f3dfed;font:inherit;font-size:12px;cursor:pointer;min-height:40px}.walker-toggle:focus-visible{outline:2px solid #f6acd4;outline-offset:4px}@keyframes character-step{0%,100%{transform:translateY(0) rotate(var(--lean,2deg))}50%{transform:translateY(-5px) rotate(0deg)}}@media(max-width:600px){.roaming-character{bottom:58px;width:86px}.walker-toggle{font-size:11px}}@media(prefers-reduced-motion:reduce){.walking .walker-art{animation:none}}
+</style>

@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Character from './Character.astro';
+import RoamingCharacter from './RoamingCharacter.astro';
 import Catalog from './Catalog.astro';
 import Video from './Video.astro';
 import VideoRankings from './VideoRankings.astro';
@@ -17,7 +18,7 @@ const title = page === 'home' ? 'Tokyo Anime Music — Where Anime Meets Music.'
 const description = ja ? 'Tokyo Anime Musicの公式サイト。音楽、映像、配信リンクをお届けします。' : 'The official home of Tokyo Anime Music. Explore music, videos, and streaming links.';
 ---
 <Layout lang={lang} page={page} title={title} description={description}>
-{page === 'home' ? <>
+{page === 'home' ? <><RoamingCharacter ja={ja} />
 <section class="hero" data-pointer-scene><div class="scene-atmosphere" aria-hidden="true"><div class="halo-ring"></div>{Array.from({length:18},(_,i)=><span class:list={["sky-particle",{petal:i%3===0}]} style={`--px:${10+(i*37)%85}%;--py:${8+(i*23)%74}%;--delay:${i*.08}s;--angle:${i*29}deg`} />)}</div><div class="pointer-glow" aria-hidden="true"></div>
 <img class="hero-art" src="/images/tokyo-night.svg" alt="" fetchpriority="high" width="1600" height="1100" />
 <div class="character-portrait"><div class="character-frame"><Character ja={ja} /><div class="character-caption"><span>TOKYO ANIME MUSIC</span><small>YOUR WORLD. YOUR SOUND.</small></div></div><span class="character-spark" aria-hidden="true">✦</span></div><div class="hero-content"><p class="eyebrow"><span></span> TOKYO ANIME MUSIC · OFFICIAL</p><h1>Where Anime<br/>Meets <em>Music.</em></h1><p class="hero-copy">{ja ? '日常を抜け出す、一曲に出会おう。' : 'Find the soundtrack to your own anime moment.'}</p><div class="actions"><a class="button primary" href={featured?.hyperfollow ?? hyperfollow} target="_blank" rel="noopener noreferrer"><span class="play-disc" aria-hidden="true">▶</span>{ja ? '音楽の世界へ' : 'Enter the music'} <span>↗</span></a><a class="button secondary" href={href(lang,'music')}>{ja ? '楽曲を探す' : 'Explore the music'} <span>→</span></a></div></div>
