@@ -1,0 +1,57 @@
+---
+import data from '../data/video-rankings.json';
+interface Props { ja: boolean }
+const {ja}=Astro.props;
+const tracks=data.groups.filter(g=>g.id!=='long').flatMap(g=>g.entries).filter(e=>!(/君の知らない物語|kimi no shiranai/i.test(e.title))).map(e=>({title:e.title,id:new URL(e.url).searchParams.get('v')}));
+---
+<section class="sing-panel" data-sing-panel data-tracks={JSON.stringify(tracks)} data-ja={String(ja)} aria-label={ja?'キャラクターの歌唱モード':'Character singing mode'}>
+<button data-sing-open aria-expanded="false">{ja?'♫ 歌ってもらう':'♫ Sing for me'}</button>
+<div data-sing-content hidden>
+<p class="sing-title" data-song-title aria-live="polite"></p>
+<div id="character-youtube-player"></div>
+<p class="sing-note" data-sing-status aria-live="polite">{ja?'公式YouTubeからランダム再生 · 初期音量15％':'Random official YouTube videos · Volume 15%'}</p>
+<div class="sing-actions"><button data-sing-next disabled>{ja?'次の曲':'Next song'}</button><button data-sing-close>{ja?'停止して閉じる':'Stop & close'}</button></div>
+<p class="sing-note">{ja?'再生中に簡易口パクが動きます。歌詞との完全同期ではありません。':'Simple mouth animation while playing; not synchronized to lyrics.'}</p>
+</div>
+</section>
+<script>
+type Player={loadVideoById:(id:string)=>void;stopVideo:()=>void;setVolume:(n:number)=>void;destroy:()=>void};
+type PlayerEvent={data:number;target:Player};
+type YTApi={Player:new(id:string,options:Record<string,unknown>)=>Player};
+const panel=document.querySelector<HTMLElement>('[data-sing-panel]');
+if(panel){
+ const tracks=JSON.parse(panel.dataset.tracks||'[]') as {title:string;id:string}[];
+ const ja=panel.dataset.ja==='true';
+ const open=panel.querySelector<HTMLButtonElement>('[data-sing-open]')!;
+ const content=panel.querySelector<HTMLElement>('[data-sing-content]')!;
+ const next=panel.querySelector<HTMLButtonElement>('[data-sing-next]')!;
+ const close=panel.querySelector<HTMLButtonElement>('[data-sing-close]')!;
+ const title=panel.querySelector<HTMLElement>('[data-song-title]')!;
+ const status=panel.querySelector<HTMLElement>('[data-sing-status]')!;
+ const walker=document.querySelector('[data-roaming-character]');
+ const win=window as typeof window & {YT?:YTApi;onYouTubeIframeAPIReady?:()=>void};
+ let player:Player|undefined,ready=false,current=-1,active=false,loading:Promise<void>|undefined;
+ const singing=(value:boolean)=>walker?.classList.toggle('singing',value);
+ function choose(){const choices=tracks.map((_,i)=>i).filter(i=>i!==current);current=choices[Math.floor(Math.random()*choices.length)]??0;title.textContent=tracks[current]?.title||'';return tracks[current]?.id;}
+ function playNext(){singing(false);const id=choose();if(id&&ready&&active){status.textContent=ja?'読み込み中…':'Loading…';player?.loadVideoById(id);}}
+ function loadAPI(){return loading??=new Promise<void>((resolve,reject)=>{if(win.YT){resolve();return;}const old=win.onYouTubeIframeAPIReady;win.onYouTubeIframeAPIReady=()=>{old?.();resolve();};const script=document.createElement('script');script.src='https://www.youtube.com/iframe_api';script.onerror=()=>reject(Error('YouTube unavailable'));document.head.append(script);setTimeout(()=>{if(!win.YT)reject(Error('YouTube timeout'));},15000);});}
+ open.addEventListener('click',async()=>{
+  if(active)return;active=true;content.hidden=false;open.setAttribute('aria-expanded','true');open.disabled=true;
+  try{await loadAPI();if(!active)return;if(player&&ready){playNext();return;}
+   const id=choose();if(!id)throw Error('No tracks');
+   player=new win.YT!.Player('character-youtube-player',{width:'100%',height:220,videoId:id,playerVars:{playsinline:1,origin:location.origin,autoplay:0},events:{
+    onReady:(event:{target:Player})=>{player=event.target;ready=true;next.disabled=false;player.setVolume(15);if(active)player.loadVideoById(id);else player.stopVideo();},
+    onStateChange:(event:PlayerEvent)=>{singing(active&&event.data===1);if(!active)return;if(event.data===0)playNext();else status.textContent=event.data===1?(ja?'再生中 · 音量はプレーヤーで調整できます':'Playing · Adjust volume in the player'):(ja?'動画の再生ボタンで開始・再開できます':'Press play in the video to start or resume');},
+    onError:()=>{singing(false);status.textContent=ja?'この動画を再生できません。「次の曲」をお試しください。':'This video is unavailable. Try Next song.';},
+    onAutoplayBlocked:()=>{singing(false);status.textContent=ja?'動画の再生ボタンを押してください。':'Press the play button in the video.';}
+   }});
+  }catch{singing(false);active=false;open.disabled=false;loading=undefined;status.textContent=ja?'YouTubeを読み込めません。再度お試しください。':'Could not load YouTube. Please try again.';}
+ });
+ next.addEventListener('click',playNext);
+ close.addEventListener('click',()=>{active=false;player?.stopVideo();singing(false);content.hidden=true;open.disabled=false;open.setAttribute('aria-expanded','false');open.focus();});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){player?.stopVideo();singing(false);}});
+}
+</script>
+<style>
+.sing-panel{position:fixed;right:12px;bottom:66px;z-index:27;width:min(360px,calc(100vw - 24px));border-radius:16px;background:#11162ff5;border:1px solid #bb7aa755;padding:12px;color:#fff;box-shadow:0 8px 32px #0005}.sing-panel:has([data-sing-content][hidden]){width:auto;padding:0;background:none;border:0}.sing-panel button{color:#fff;background:#372444;border:1px solid #d49abb88;border-radius:20px;min-height:40px;padding:8px 14px;cursor:pointer;font:inherit;font-size:13px}.sing-panel button:disabled{opacity:.55;cursor:default}.sing-panel button:focus-visible{outline:2px solid #ffb8e7;outline-offset:3px}.sing-title{font-size:13px;line-height:1.5;margin:10px 0}.sing-note{font-size:11px;line-height:1.5;color:#ccc5db}.sing-actions{display:flex;gap:8px}.sing-panel :global(iframe){display:block;width:100%;height:220px;border:0}.sing-panel [hidden]{display:none}@media(max-width:600px){.sing-panel{bottom:62px;max-height:calc(100dvh - 85px);overflow:auto}}
+</style>
