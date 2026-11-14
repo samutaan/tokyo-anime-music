@@ -1942,5 +1942,27 @@
     "appleVerifiedAt": "2026-10-28",
     "spotify": "https://open.spotify.com/track/4HVKiCDHiofJ6FmQJL4KXb",
     "cover": "/images/covers/release-d44a886c9d33.jpg"
+  },
+  {
+    "id": "booth-number-38",
+    "title": "ブース番号38",
+    "artist": "Tokyo Anime Music",
+    "status": "pending",
+    "verified": false,
+    "releaseType": "single",
+    "hyperfollow": "https://distrokid.com/hyperfollow/tokyoanimemusic/38",
+    "preRelease": true,
+    "registrationCheckedAt": "2026-11-14"
+  },
+  {
+    "id": "hantensuru-hyouhon",
+    "title": "反転する標本",
+    "artist": "Tokyo Anime Music",
+    "status": "pending",
+    "verified": false,
+    "releaseType": "single",
+    "hyperfollow": "https://distrokid.com/hyperfollow/tokyoanimemusic/Gg4GuCYFa9v",
+    "preRelease": true,
+    "registrationCheckedAt": "2026-11-14"
   }
 ]

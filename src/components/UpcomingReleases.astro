@@ -1,0 +1,13 @@
+---
+import {upcomingReleases} from '../data/catalog';
+interface Props {ja:boolean}
+const {ja}=Astro.props;
+---
+{upcomingReleases.length>0 && <section class="section upcoming" aria-labelledby="upcoming-title">
+<p class="eyebrow">COMING SOON</p><h2 id="upcoming-title">{ja?'次の物語、配信準備中。':'The next chapter is on its way.'}</h2>
+<p class="muted">{ja?'新曲の配信リンクはHyperFollowへ。配信開始日はまだ確定していません。':'Discover the new releases on HyperFollow. Streaming release dates are not yet confirmed.'}</p>
+<div class="upcoming-grid">{upcomingReleases.map(r=><article class="upcoming-card"><span class="upcoming-status">{ja?'配信準備中':'Coming soon'}</span><h3>{r.title}</h3><p>Tokyo Anime Music</p><div class="upcoming-actions"><a class="button primary" href={r.hyperfollow} target="_blank" rel="noopener noreferrer">{ja?'HyperFollowを開く':'Open HyperFollow'} ↗</a><a class="text-link" href={(ja?'/ja':'')+'/music/'+r.id+'/'}>{ja?'楽曲の詳細':'Release details'} →</a></div></article>)}</div>
+</section>}
+<style>
+.upcoming-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px;margin-top:28px}.upcoming-card{padding:clamp(24px,4vw,40px);border:1px solid #ffffff30;border-radius:18px;background:radial-gradient(ellipse at top right,#74539a44,transparent 70%),#10162d}.upcoming-card h3{font-size:clamp(25px,3vw,36px);line-height:1.4;overflow-wrap:anywhere;margin:20px 0 10px}.upcoming-card p{color:#b2b6cf}.upcoming-status{display:inline-block;border:1px solid #e6b7db66;border-radius:99px;padding:6px 12px;font-size:13px;color:#efb1d5}.upcoming-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:24px}
+</style>
