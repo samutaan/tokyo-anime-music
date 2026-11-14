@@ -21,3 +21,16 @@ test('network failure and dry run leave file byte-identical; apply backs up',asy
  await sync({root,apply:true,fetcher});assert.equal(JSON.parse(await fs.readFile(file,'utf8'))[0].status,'released');assert.equal(await fs.readFile(path.join(root,'work/catalog-before-sync.json'),'utf8'),original);
  }finally{if(path.dirname(root)!==path.resolve(os.tmpdir())||!path.basename(root).startsWith('tam-sync-'))throw Error('Unsafe temporary cleanup path');await fs.rm(root,{recursive:true,force:true});}
 });
+test('prerelease card becomes the same released entry and keeps HyperFollow',()=>{
+ const upcoming={...row,id:'booth-number-38',title:'ブース番号38',preRelease:true,registrationCheckedAt:'2026-11-14'};
+ const remote={...song,trackName:'ブース番号38'};
+ const a=mergeCatalog([upcoming],payload([remote]));
+ assert.equal(a.catalog.length,1);assert.equal(a.catalog[0].id,upcoming.id);
+ assert.equal(a.catalog[0].status,'released');assert.equal(a.catalog[0].hyperfollow,upcoming.hyperfollow);
+ assert.equal(a.catalog.filter(r=>r.status==='pending'&&r.preRelease).length,0);
+ assert.equal(mergeCatalog(a.catalog,payload([remote])).report.changes.length,0);
+});
+test('an absent prerelease remains pending across Apple sync',()=>{
+ const a=mergeCatalog([{...row,title:'Pending next single',preRelease:true}],payload());
+ assert.equal(a.catalog.filter(r=>r.status==='pending'&&r.preRelease).length,1);
+});
