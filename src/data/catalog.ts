@@ -5,3 +5,6 @@ export type {Release} from './validate';
 const catalog=validateCatalog(raw);
 export const releases=catalog.filter(r=>r.verified&&r.status==='released');
 export const pendingReleases=catalog.filter(r=>r.status==='pending');
+
+// Once Apple verifies a matching title, it leaves this list without losing its stable ID or HyperFollow.
+export const upcomingReleases=pendingReleases.filter(r=>r.preRelease);

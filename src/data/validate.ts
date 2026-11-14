@@ -1,4 +1,4 @@
-export interface Release { id:string; title:string; artist:string; status:'pending'|'released'; verified:boolean; releaseDate?:string; cover?:string; isrc?:string; releaseType:'single'|'album'|'ep'|'unknown'; hyperfollow?:string; spotify?:string; appleMusic?:string; youtube?:string; }
+export interface Release { id:string; title:string; artist:string; status:'pending'|'released'; verified:boolean; preRelease?:boolean; registrationCheckedAt?:string; releaseDate?:string; cover?:string; isrc?:string; releaseType:'single'|'album'|'ep'|'unknown'; hyperfollow?:string; spotify?:string; appleMusic?:string; youtube?:string; }
 const seen=new Set<string>();
 const codes=new Set<string>();
 const hosts:Record<string,string[]>={hyperfollow:['distrokid.com'],spotify:['open.spotify.com'],appleMusic:['music.apple.com'],youtube:['www.youtube.com','youtube.com','youtu.be']};
@@ -12,6 +12,8 @@ export function validateCatalog(data:unknown):Release[]{
   seen.add(r.id);
   if(typeof r.title!=='string'||!r.title.trim()||r.artist!=='Tokyo Anime Music')throw new Error('Title or artist invalid: '+r.id);
   if(!['pending','released'].includes(String(r.status))||typeof r.verified!=='boolean'||!['single','album','ep','unknown'].includes(String(r.releaseType)))throw new Error('Invalid release status/type: '+r.id);
+  if(r.preRelease!==undefined&&typeof r.preRelease!=='boolean')throw new Error('Invalid prerelease flag: '+r.id);
+  if(r.registrationCheckedAt!==undefined&&(typeof r.registrationCheckedAt!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(r.registrationCheckedAt)))throw new Error('Invalid registration check date: '+r.id);
   if(r.releaseDate!==undefined&&(typeof r.releaseDate!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(r.releaseDate)||Number.isNaN(Date.parse(r.releaseDate))||new Date(r.releaseDate).toISOString().slice(0,10)!==r.releaseDate))throw new Error('Invalid release date: '+r.id);
   if(r.cover!==undefined&&(typeof r.cover!=='string'||!/^\/images\/[a-zA-Z0-9_/-]+\.(jpg|jpeg|png|webp)$/.test(r.cover)||r.cover.includes('..')))throw new Error('Use a local cover under /images/: '+r.id);
   if(r.isrc!==undefined){if(typeof r.isrc!=='string'||!/^[A-Z]{2}[A-Z0-9]{3}[0-9]{7}$/.test(String(r.isrc))||codes.has(String(r.isrc)))throw new Error('Invalid or duplicate ISRC: '+r.id);codes.add(String(r.isrc));}
