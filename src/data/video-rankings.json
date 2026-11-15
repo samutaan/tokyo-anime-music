@@ -1,6 +1,6 @@
 {
-  "observedAt": "2026-11-14",
-  "updatedAt": "2026-11-14T01:26:20.845Z",
+  "observedAt": "2026-11-15",
+  "updatedAt": "2026-11-15T01:00:36.211Z",
   "method": "youtube-api-view-count",
   "source": "https://www.youtube.com/@TokyoAnimeMusic/videos",
   "groups": [
@@ -129,7 +129,7 @@
           "url": "https://www.youtube.com/watch?v=JN2C1mYaUJQ",
           "duration": "3 分 57 秒",
           "seconds": 237,
-          "views": 140,
+          "views": 141,
           "position": 5
         },
         {
