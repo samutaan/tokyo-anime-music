@@ -1,0 +1,47 @@
+---
+interface Props { ja: boolean }
+const {ja}=Astro.props;
+---
+<div class="analytics-choice" data-analytics-choice hidden role="region" aria-label={ja?'アクセス解析の設定':'Analytics preferences'}>
+  <p>{ja?'サイト改善のため、許可した場合にGoogle Analyticsで閲覧ページや端末情報などを計測し、Cookieを使用します。広告のパーソナライズには使用しません。拒否してもサイトを利用できます。':'With your permission, Google Analytics uses cookies to measure page views and device information to improve this site. We do not use it for personalized advertising. You can use the site without accepting.'} <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">{ja?'Googleのプライバシーポリシー':'Google privacy policy'} ↗</a></p>
+  <div><button type="button" data-analytics-accept>{ja?'解析を許可':'Allow analytics'}</button><button type="button" data-analytics-reject>{ja?'許可しない':'Decline'}</button></div>
+</div>
+<button type="button" class="analytics-settings" data-analytics-settings>{ja?'アクセス解析の設定':'Analytics preferences'}</button>
+<script>
+const banner=document.querySelector<HTMLElement>('[data-analytics-choice]');
+const settings=document.querySelector<HTMLButtonElement>('[data-analytics-settings]');
+if(banner&&settings){
+ const id='G-KSPKD29WYH';
+ const key='tam-analytics-consent-v1';
+ const production=['tokyo-anime-music.web.app','tokyo-anime-music.firebaseapp.com'].includes(location.hostname);
+ const w=window as typeof window & {dataLayer:unknown[];gtag:(...args:unknown[])=>void;[key:string]:unknown};
+ let loaded=false;
+ let choice:string|null=null;
+ try{choice=localStorage.getItem(key);}catch{}
+ function enable(){
+  if(!production||loaded)return;
+  loaded=true;w['ga-disable-'+id]=false;
+  w.dataLayer=w.dataLayer||[];
+  w.gtag=function(){w.dataLayer.push(arguments);};
+  w.gtag('consent','default',{analytics_storage:'granted',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
+  w.gtag('js',new Date());
+  // Strip query strings and fragments, which can contain user-entered data.
+  let referrer='';try{const ref=new URL(document.referrer);referrer=ref.origin+ref.pathname;}catch{}
+  w.gtag('config',id,{allow_google_signals:false,allow_ad_personalization_signals:false,page_location:location.origin+location.pathname,page_referrer:referrer,cookie_domain:location.hostname,cookie_expires:15552000});
+  const script=document.createElement('script');script.async=true;script.src='https://www.googletagmanager.com/gtag/js?id='+id;script.dataset.analyticsTag='true';document.head.append(script);
+ }
+ function save(value:string){choice=value;try{localStorage.setItem(key,value);}catch{}banner!.hidden=true;settings!.focus();}
+ banner.querySelector('[data-analytics-accept]')?.addEventListener('click',()=>{save('granted');enable();});
+ banner.querySelector('[data-analytics-reject]')?.addEventListener('click',()=>{
+  save('denied');w['ga-disable-'+id]=true;
+  for(const item of document.cookie.split(';')){const name=item.trim().split('=')[0];if(/^_ga(?:_|$)/.test(name))for(const domain of ['',`; domain=${location.hostname}`,`; domain=.${location.hostname}`])document.cookie=`${name}=; Max-Age=0; path=/${domain}`;}
+  if(loaded)location.reload();
+ });
+ settings.addEventListener('click',()=>{banner.hidden=false;banner.querySelector<HTMLButtonElement>('[data-analytics-accept]')?.focus();});
+ window.addEventListener('storage',(event)=>{if(event.key===key)location.reload();});
+ if(choice==='granted')enable();else if(choice!=='denied')banner.hidden=false;
+}
+</script>
+<style>
+.analytics-choice{position:fixed;left:16px;bottom:16px;z-index:100;max-width:460px;width:calc(100% - 32px);padding:18px;border:1px solid #dc9bc688;border-radius:16px;background:#10162df7;color:#f6f3fc;box-shadow:0 8px 30px #0006;font-size:13px}.analytics-choice[hidden]{display:none}.analytics-choice p{margin:0 0 12px;line-height:1.7}.analytics-choice a{text-decoration:underline}.analytics-choice>div{display:flex;gap:12px;flex-wrap:wrap}.analytics-choice button{padding:10px 16px;border:1px solid #dc9bc6;border-radius:22px;background:#302139;color:#fff;font:inherit;cursor:pointer;min-height:44px}.analytics-settings{display:block;margin:18px auto;border:0;background:transparent;color:#c5bcd0;text-decoration:underline;cursor:pointer;padding:12px;font:inherit;font-size:12px}.analytics-choice button:focus-visible,.analytics-settings:focus-visible{outline:2px solid #efa5cf;outline-offset:3px}
+</style>

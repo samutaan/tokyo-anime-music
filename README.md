@@ -40,3 +40,12 @@ Daily schedule: approximately 06:17 JST, with manual dispatch also available. On
 Add a single reviewed entry to `src/data/releases.json` with a unique stable `id`, exact title, `artist: "Tokyo Anime Music"`, `status: "pending"`, `verified: false`, `preRelease: true`, the verified DistroKid HyperFollow URL, and `registrationCheckedAt` (YYYY-MM-DD). Do not set a release date or streaming links until verified. This is an editorial step, not an automatic DistroKid import, and needs no DistroKid login credentials or paid API. Do not add deleted/unregistered releases.
 
 These entries appear as “Coming soon / 配信準備中” on the home page and in Music. The existing Apple JP sync matches the exact normalized title and updates the same entry when a streamable track appears, preserving the ID and HyperFollow. It then disappears from Coming soon, avoiding a duplicate card. Ambiguous same-title versions are held for review instead of guessed. Test this transition with `pnpm test:sync`; build with `pnpm build` before publishing.
+
+## PV measurement (Google Analytics 4)
+- Property: Tokyo Anime Music Official Website (565414710), account 417156668.
+- Web stream: Tokyo Anime Music Website (16390001742); public measurement ID G-KSPKD29WYH.
+- Dashboard: https://analytics.google.com/analytics/web/#/a417156668p565414710/reports/intelligenthome
+- Standard free GA4 only. No Google Ads or BigQuery billing connection.
+- Analytics.astro loads the Google tag only after Allow analytics, on the two production Firebase hostnames. Decline never loads it. Footer Analytics preferences allows withdrawal; withdrawal disables collection, removes this site's GA cookies, and reloads. Local preview never sends GA events.
+- Page views are collected once per full page load. Query strings/fragments are stripped from page URL and referrer. Advertising signals/personalization are disabled. Enhanced measurement is off in the web stream.
+- Views exclude visitors who decline, block analytics, or browse before installation. Standard reports can lag up to 48 hours; Realtime is useful for initial verification.
