@@ -1,6 +1,6 @@
 {
-  "observedAt": "2026-11-26",
-  "updatedAt": "2026-11-26T03:32:44.248Z",
+  "observedAt": "2026-11-27",
+  "updatedAt": "2026-11-27T03:38:09.202Z",
   "method": "youtube-api-view-count",
   "source": "https://www.youtube.com/@TokyoAnimeMusic/videos",
   "groups": [
@@ -52,7 +52,7 @@
           "url": "https://www.youtube.com/watch?v=AAKt27R-1iY",
           "duration": "1 時間 16 分 59 秒",
           "seconds": 4619,
-          "views": 272,
+          "views": 274,
           "position": 6
         },
         {
@@ -97,7 +97,7 @@
           "url": "https://www.youtube.com/watch?v=c6jviyQrxFA",
           "duration": "4 分 11 秒",
           "seconds": 251,
-          "views": 497,
+          "views": 504,
           "position": 1
         },
         {
@@ -113,7 +113,7 @@
           "url": "https://www.youtube.com/watch?v=0oBjirZMpqA",
           "duration": "3 分 35 秒",
           "seconds": 215,
-          "views": 217,
+          "views": 218,
           "position": 3
         },
         {
@@ -121,7 +121,7 @@
           "url": "https://www.youtube.com/watch?v=URW18ySSlHY",
           "duration": "3 分 44 秒",
           "seconds": 224,
-          "views": 164,
+          "views": 165,
           "position": 4
         },
         {
@@ -169,7 +169,7 @@
           "url": "https://www.youtube.com/watch?v=3PvsykIU9KU",
           "duration": "3 分 49 秒",
           "seconds": 229,
-          "views": 84,
+          "views": 85,
           "position": 10
         }
       ]
